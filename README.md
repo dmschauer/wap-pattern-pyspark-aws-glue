@@ -22,7 +22,8 @@ In your AWS account:
 - Create an S3 bucket
 - Create IAM role with matching permissions for Glue and S3 access
 - Create a Glue 5.0 ETL job
-  - Copy paste the code into the job
+  - Copy paste the code in `wap_etl.py` into the job
+  - In `main()` replace the value of `s3_bucket` with your own
   - Run it
 - (optional) Check results in Athena
 

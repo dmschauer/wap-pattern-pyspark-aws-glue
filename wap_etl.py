@@ -144,10 +144,10 @@ def main() -> None:
     # Configuration
     # Note: This is for demonstration only, in a real world scenario you would
     # make these parameters of the Glue job and set them there, possibly by using Infrastructure as Code.
-    s3_bucket = "dominikschauer-iceberg-warehouse"
+    s3_bucket = "my-iceberg-warehouse" # replace with your own bucket name
     catalog_name = "glue_catalog"
-    database_name = "athena_iceberg_test2"
-    table_name = "my_iceberg_table2"
+    database_name = "athena_iceberg_test"
+    table_name = "my_iceberg_table"
     full_table_name = f"{catalog_name}.{database_name}.{table_name}"
 
     # Create Spark session
