@@ -92,4 +92,3 @@ Keep it simple though. A simple email you send them and they reply by acknowledi
 - https://iceberg.apache.org/releases/
 - https://iceberg.apache.org/docs/latest/branching/
 - https://www.guptaakashdeep.com/wap-via-apache-iceberg-on-aws/
-- 
