@@ -111,14 +111,23 @@ def wap_append(spark: SparkSession, catalog_name: str, database_name: str, table
             # Publish changes from temporary branch to main branch
             print("Audit passed. Publishing changes.")
             spark.sql(f"CALL {catalog_name}.system.fast_forward('{table_name}', 'main', '{audit_branch_name}')")
+
+            # The Audit is done. Thus the audit branch has served its purpose and can be deleted.
+            # Note:
+            #  This is explicitly NOT part of the finally block, because you might want to analyze
+            #  the data in the audit branch in case of data quality check failures and only delete it afterwards.
+            #  This is especially true in case computing the results is expensive.
+            #  You could also argue against this decision though, for example in case you need
+            #  to avoid manual interventions in prod altogether, or in case you know you won't analyze results anyway.
+            #  Being able to look at the faulty results is generally something you want though.
+            spark.sql(f"ALTER TABLE {table_name} DROP BRANCH {audit_branch_name}")
         else:
             # WAP: Don't publish
             # Because when a check failed we know there's an issue with the data
             # Note:
             #  In a real world scenario you would want to do a more complex Data Quality Check failure handling,
             #  i.e. construct an audit report, send an email to the team, to the consumers, log the error, etc.
-            print("Audit failed. Reverting changes.")
-            spark.sql(f"ALTER TABLE {table_name} DROP BRANCH {audit_branch_name}")
+            print("Audit failed. Not publishing changes.")
     except Exception as e:
         raise
         # Note:
@@ -129,16 +138,6 @@ def wap_append(spark: SparkSession, catalog_name: str, database_name: str, table
         # Unset from table properties so that creating the table DDL statement in Athena will work again
         spark.sql(f"ALTER TABLE {table_name} UNSET TBLPROPERTIES ('write.wap.enabled')")
         
-    # The Audit is done. Thus the audit branch has served its purpose and can be deleted.
-    # Note:
-    #  This is explicitly NOT part of the finally block, because you might want to analyze
-    #  the data in the audit branch in case of data quality check failures and only delete it afterwards.
-    #  This is especially true in case computing the results is expensive.
-    #  You could also argue against this decision though, for example in case you need
-    #  to avoid manual interventions in prod altogether, or in case you know you won't analyze results anyway.
-    #  Being able to look at the faulty results is generally something you want though.
-    spark.sql(f"ALTER TABLE {table_name} DROP BRANCH IF EXISTS {audit_branch_name}")
-
 
 def main() -> None:
     # Configuration
