@@ -92,8 +92,4 @@ Keep it simple though. A simple email you send them and they reply by acknowledi
 - https://docs.aws.amazon.com/prescriptive-guidance/latest/apache-iceberg-on-aws/iceberg-glue.html
 - https://iceberg.apache.org/releases/
 - https://iceberg.apache.org/docs/latest/branching/
-<<<<<<< HEAD
->>>>>>> 885ed60dde9c65ea299482e290384b0db9971c44
-- https://www.guptaakashdeep.com/wap-via-apache-iceberg-on-aws/
-=======
 - https://www.guptaakashdeep.com/wap-via-apache-iceberg-on-aws/
